@@ -17,7 +17,7 @@ title: "Completely understand tsconfig.json"
 </style>
 
 <div class="intro">
-  <div style="font-size: 62px;">Completely understand tsconfig.json</div>
+  <div style="font-size: 58px;">Completely understand tsconfig.json</div>
   @pco2699<br>
   Ginza.js#5 @ Plaid
 </div>
@@ -43,9 +43,9 @@ title: "Completely understand tsconfig.json"
 
 <div class="col">
   <ul>
-    <li>高山 和幸</li>
-    <li>@pco2699</li>
-    <li><b>TypeScript</b>と<br><b>Algorithms</b></li>
+    <li>Kazuyuki Takayama</li>
+    <li>Twitter: @pco2699</li>
+    <li>Like: <b>TypeScript</b></li>
   </ul>
 </div>
 </div>
@@ -64,7 +64,7 @@ title: "Completely understand tsconfig.json"
 
 ### TypeScript Version
 - TypeScript 3.6準拠
-- コンパイラオプションはよく追加/変化するので注意
+- コンパイラオプションは追加/変化するので注意
 - 困ったら公式を参照！
 
 ---
@@ -103,8 +103,11 @@ title: "Completely understand tsconfig.json"
 - include
 <br><br>
 
-##### その他
+##### プロジェクト分割
 - references/extends
+<br><br>
+
+##### IDE
 - typeAcquisition
 - compileOnSave
 <br><br>
@@ -121,9 +124,7 @@ title: "Completely understand tsconfig.json"
 - include
 <br><br>
 
-- tsc時にコンパイルする対象を指定する  
-- webpackでコンパイルする対象が決まっていれば  
-tsconfig.jsonに記載する必要はなし
+- tscでコンパイルする対象を指定する  
 
 
 --
@@ -158,10 +159,8 @@ include/excludeはglobで対象・対象外を指定
 
 ---
 
-##### その他
+##### プロジェクト分割
 - references/extends
-- typeAcquisition
-- compileOnSave
 
 --
 
@@ -191,7 +190,7 @@ include/excludeはglobで対象・対象外を指定
   }
 }
 ```
-ベースとなる設定を記載。(基底クラスのような働き)
+ベースとなる設定を記載 (基底クラスのような働き)
 
 --
 
@@ -229,11 +228,9 @@ testを動かす際は、`--build`で`src`をビルドする
 
 ---
 
-##### その他
+##### IDE
 - typeAcquision
 - compileOnSave
-
-この２つはIDE周りの設定
 
 --
 
@@ -251,7 +248,7 @@ import時に、型ファイルをIDEが自動取得するか
   "compileOnSave": true
 }
 ```
-tsconfig.jsonを保存した時にtsファイルをコンパイルし直すか
+tsconfig.jsonを保存時にtsファイルをコンパイルし直すか
 
 ---
 
@@ -259,11 +256,24 @@ tsconfig.jsonを保存した時にtsファイルをコンパイルし直すか
 - compilerOptions
 <br><br>
 コンパイラオプションは非常に多い(85個)<br>
-時間が無いので代表的なものだけ説明<br>
+デフォルトのtsconfig.jsonでtrueのものだけ説明<br>
 
 ---
 
-型を厳しくチェックしたい
+```
+$ tsc --init
+```
+
+```json
+{
+  "compilerOptions": {
+    "target": "es5",  // コンパイル後のJSのバージョン
+    "module": "commonjs", // コンパイル後のimport/export方式
+    "strict": true,
+    "esModuleInterop": true 
+  }
+}
+```
 
 ---
 
@@ -300,7 +310,63 @@ const piyo: number = null; // strictNullChecks error
 
 ---
 
-その他は<a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">公式資料</a>を参照しましょう。　　
+- esModuleInterop
+
+--
+
+Interoperability of CommonJS <=> ES6 Module  
+
+Interoperability: 相互運用性
+
+--
+
+#### CommonJs import/export
+```ts
+// export
+const hoge = () => {
+  // ...some func
+}
+exports = hoge
+
+// import
+const moment = require("hoge");
+moment();
+```
+
+--
+
+#### ES6 Module import/export
+```ts
+// export
+export const hoge = () => {
+  // ...some func
+};
+
+// import
+import { hoge } from 'hoge';
+hoge();
+```
+
+--
+
+#### export: CommonJs import: ES6 Module
+
+##### esmoduleInterOp: false
+```ts
+import * as hoge from './hoge'
+hoge(); // *を呼び出すのはES6 Moduleの規約NG
+```
+
+##### esmoduleInterOp: true
+```ts
+// CommonJSをdefault importでimportできる
+import hoge from './hoge'
+hoge(); // ES6 Module準拠
+```
+
+--
+
+その他は<a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">公式資料</a>を参照しましょう。
 
 ---
 
