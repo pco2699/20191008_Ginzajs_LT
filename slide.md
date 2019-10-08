@@ -351,13 +351,13 @@ hoge();
 
 #### export: CommonJs import: ES6 Module
 
-##### esmoduleInterOp: false
+##### esmoduleInterop: false
 ```ts
 import * as hoge from './hoge'
 hoge(); // *を呼び出すのはES6 Moduleの規約NG
 ```
 
-##### esmoduleInterOp: true
+##### esmoduleInterop: true
 ```ts
 // CommonJSをdefault importでimportできる
 import hoge from './hoge'
@@ -370,3 +370,6 @@ hoge(); // ES6 Module準拠
 
 ---
 
+### まとめ
+- tsconfig.jsonを完全に理解した
+- 次回は「コンパイラオプションを完全に理解する」を40分かけてやりたい
